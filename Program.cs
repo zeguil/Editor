@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 
 namespace editor
 {
@@ -35,7 +37,7 @@ namespace editor
         {
             Console.Clear();
             Console.WriteLine("Digite seu texto abaixo  (ESC para sair)");
-            Console.WriteLine("\n---------------------");
+            Console.WriteLine("\n--------------------------------------");
 
             string texto = "";
 
@@ -44,9 +46,30 @@ namespace editor
                 texto += Console.ReadLine();
                 texto += Environment.NewLine;
             }
-            while(Console.ReadKey().Key != ConsoleKey.Escape)
+            while(Console.ReadKey().Key != ConsoleKey.Escape);
             
-            Console.WriteLine(texto)
+            Salvar(texto)
+        }
+
+        static void Salvar(string texto)
+        {
+            Console.Clear();
+            Console.WriteLine("Digite o caminho onde deseja salvar o arquivo")
+            var path = Console.ReadLine();
+
+            using (var file  =  new StreamWriter(path))
+            {
+                file.Write(texto);
+            }
+            Console.Clear();
+            Console.WriteLine("Salvando arquivo...");
+            Thread.Sleep(1500);
+            Console.Clear();
+
+            Console.WriteLine("Arquivo salvo");
+            Thread.Sleep(1000);
+            Console.Clear();
+            Menu();
         }
     }
 }
