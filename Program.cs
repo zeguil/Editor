@@ -16,14 +16,14 @@ namespace editor
         {
             Console.Clear();
             Console.WriteLine("\nBEM VINDO AO EDITOR TOPZEIRA\n");
-            Console.WriteLine("1 - Abrir arquivo\n2 - Criar arquivo\n3 - Sair\n------------------");
+            Console.WriteLine("1 - Abrir arquivo\n2 - Criar arquivo\n0 - Sair\n------------------");
             int opcao = int.Parse(Console.ReadLine());
 
             switch (opcao)
             {
+                case 0: System.Environment.Exit(0); break;
                 case 1: Abrir();break;
-                case 2: Editar(); break;
-                case 3: System.Environment.Exit(0); break;
+                case 2: Criar(); break;
                 default: Menu(); break;
             }
         }
@@ -31,9 +31,22 @@ namespace editor
         static void Abrir()
         {
             Console.Clear();
+            string path = Directory.GetCurrentDirectory();
+            Console.WriteLine("\nDigite nome do arquivo");
+            Console.WriteLine("v----------------------\n");
+            var nome = Console.ReadLine();
+            Console.Clear();
+            using(var file = new StreamReader($"{path}\\{nome}.txt"))
+            {
+                string texto = file.ReadToEnd();
+                Console.WriteLine(texto);
+            }
+
             Console.WriteLine("");
+            Console.ReadLine();
+            Menu();
         }
-        static void Editar()
+        static void Criar()
         {
             Console.Clear();
             Console.WriteLine("Digite seu texto abaixo  (ESC para sair)");
@@ -48,16 +61,18 @@ namespace editor
             }
             while(Console.ReadKey().Key != ConsoleKey.Escape);
             
-            Salvar(texto)
+            Salvar(texto);
         }
 
         static void Salvar(string texto)
         {
             Console.Clear();
-            Console.WriteLine("Digite o caminho onde deseja salvar o arquivo")
-            var path = Console.ReadLine();
+            string path = Directory.GetCurrentDirectory();
+            Console.WriteLine("DDigite um nome para o arquivo");
+            Console.WriteLine("v----------------------------\n");
+            var nome = Console.ReadLine();
 
-            using (var file  =  new StreamWriter(path))
+            using (var file  =  new StreamWriter($"{path}\\{nome}.txt"))
             {
                 file.Write(texto);
             }
@@ -66,8 +81,8 @@ namespace editor
             Thread.Sleep(1500);
             Console.Clear();
 
-            Console.WriteLine("Arquivo salvo");
-            Thread.Sleep(1000);
+            Console.WriteLine("Arquivo salvo!");
+            Thread.Sleep(1700);
             Console.Clear();
             Menu();
         }
